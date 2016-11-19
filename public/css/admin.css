@@ -1,0 +1,95 @@
+body{
+	background-color: #f0f0f0;
+	font-size: 14px;
+	color: #333;
+	min-width: 1000px;
+	padding-top: 50px;
+}
+a{
+	text-decoration: none;
+	color: #2196f3;
+}
+a:hover,
+a:focus {
+  color: #0a6ebd;
+  text-decoration: underline;
+}
+h2{
+	font-weight: 500;
+}
+.header{
+	height: 50px;
+	background-color: #fff;
+	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+}
+.header-brand, .header-nav{
+	float: left;
+}
+.header-brand a{
+	font-size: 18px;
+	line-height: 50px;
+	padding: 0 15px;
+}
+.header-nav a{
+	color: #333;
+	line-height: 50px;
+	padding: 0 15px;
+	display: inline-block;
+	float: left;
+}
+.header-nav a.active{
+	background-color: #0c7cd5;
+	color: #fff;
+}
+.header-user{
+	float: right;
+	line-height: 50px;
+	padding: 0 15px;
+}
+.container{
+	margin: 15px;
+	background-color: #fff;
+	padding: 15px;
+}
+.container h2 small{
+	font-size: 14px;
+}
+.container h2 input{
+	float: right;
+	border: solid 1px #f0f0f0;
+	outline: none;
+	text-indent: 10px;
+	height: 28px;
+	font-size: 12px;
+	width: 300px;
+	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+.container h2 input:focus{
+	border: solid 1px #d6d6d6;
+}
+.container table{
+	width: 100%;
+	border-collapse: collapse;
+	background-color: #fff;
+	font-size: 12px;
+	border: solid 1px #efefef;
+}
+.container table tr:hover{
+	background-color: #f8f8f8;
+}
+.container table th{
+	background-color: #f0f0f0;
+}
+.container table th, .container table td{
+	text-align: left;
+	padding: 15px;
+	border-bottom: solid 1px #f0f0f0;
+}
+a.btn{
+	font-size: 14px;
+}
