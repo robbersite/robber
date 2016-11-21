@@ -54,13 +54,21 @@ Route::get('/s', function () {
 
 	// 插入品牌
 	$pinpai = getPinpai($wd);
-	$pinpai_extra = getPingpaiExtra($wd);
-
 	$pos_pinpai = strpos($data, '<div id="content_left">');
 	$data = insertToStr($data, $pos_pinpai + 23, $pinpai);
 
-	$pos_pinpai_extra = strpos($data, '<div id="content_right">');
-	$data = insertToStr($data_pinpai, $pos_pinpai_extra + 24, $pinpai_extra);
+	$pinpai_extra = getPingpaiExtra($wd);
+	$pos_pinpai_extra = strpos($data, '<div id="content_right" class="cr-offset">');
+	$data = insertToStr($data, $pos_pinpai_extra + 42, $pinpai_extra);
+
+	// 删除多余的条目
+	$removeChild = '
+	<script type="text/javascript">
+		var child=document.getElementById("1");
+		child.parentNode.removeChild(child);
+	</script>';
+	$pos_removeChild = strpos($data, '</body>');
+	$data = insertToStr($data, $pos_removeChild, $removeChild);
 
 	return view('robber')->withData($data);
 });
@@ -120,6 +128,11 @@ function getPinpai($wd){
 	}else{
 		$item_pinpai = \DB::table('item_pinpais')->where('website_id', $website->website_id)->first();
 		$website_url = \DB::table('websites')->find($website->website_id)->url;
+
+		$pos_keyword = strpos($item_pinpai->title, $wd);
+		$item_pinpai->title = insertToStr($item_pinpai->title, $pos_keyword, '<em>');
+		$pos_keyword = strpos($item_pinpai->title, $wd);
+		$item_pinpai->title = insertToStr($item_pinpai->title, $pos_keyword + strlen($wd), '</em>');
 	}
 
 	return '<style type="text/css">
@@ -311,8 +324,8 @@ function getPinpai($wd){
 			<a href="'. $website_url .'" target="_blank">家用电器</a>
 		</div>
 		<div class="pinpai-2-2">
-			<img src="'. $item_pinpai->nav_thumb .'">
-			<img src="'. $item_pinpai->nav_thumb .'">
+			<a href="'. $website_url .'" target="_blank"><img src="'. $item_pinpai->nav_thumb .'"></a>
+			<a href="'. $website_url .'" target="_blank"><img src="'. $item_pinpai->nav_thumb .'"></a>
 		</div>
 		<div class="pinpai-2-3">
 			<a href="'. $website_url .'" target="_blank">家用电器</a>
@@ -326,3 +339,65 @@ function getPinpai($wd){
 ';
 }
 
+// 获取pinpaiExtra
+function getPingpaiExtra($wd){
+
+	$website = \DB::table('keywords')->where('keyword_default', $wd)->first();
+
+	if(!isset($website)){
+		return null;
+	}else{
+		$item_pinpai = \DB::table('item_pinpais')->where('website_id', $website->website_id)->first();
+		$website_url = \DB::table('websites')->find($website->website_id)->url;
+	}
+
+	return '<style type="text/css">
+	.pinpai-extra{
+		font: 13px/1.5 arial,sans-serif;
+	    position: relative;
+	    width: 351px;
+	    border-bottom: 1px solid #e1e1e1;
+	    margin-bottom: 20px;
+	}
+	.pinpai-extra-1{
+		margin-bottom: 8px;
+	}
+	.pinpai-extra-1 img{
+		width: 259px;
+    	height: 194px;
+	}
+	.pinpai-extra-2{
+		margin-bottom: 8px;
+		line-height: 20px;
+	}
+	.pinpai-extra-2 a{
+		text-decoration: none;
+    	color: black;
+	}
+	.pinpai-extra-3{
+		margin-bottom: 8px;
+	}
+	.pinpai-extra-3 span{
+		font-size: 9px;
+	}
+	.pinpai-extra-3 a{
+		color: #00c;
+	}
+	ul{margin:0;padding: 0;list-style: none;line-height: 1.8;}
+</style>
+<div class="pinpai-extra">
+	<div class="pinpai-extra-1">
+		<a href="'. $website_url .'" target="_blank"><img src="'. $item_pinpai->extra_thumb .'"></a>
+	</div>
+	<div class="pinpai-extra-2">
+		<a href="'. $website_url .'" target="_blank">'. $item_pinpai->extra_description .'</a>
+	</div>
+	<div class="pinpai-extra-3">
+		<ul>
+			<li><span>■</span> <a href="'. $website_url .'" target="_blank">'. $item_pinpai->extra_list .'</a></li>
+			<li><span>■</span> <a href="'. $website_url .'" target="_blank">'. $item_pinpai->extra_list .'</a></li>
+			<li><span>■</span> <a href="'. $website_url .'" target="_blank">'. $item_pinpai->extra_list .'</a></li>
+		</ul>
+	</div>
+</div>';
+}
