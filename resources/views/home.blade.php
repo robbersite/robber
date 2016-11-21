@@ -32,7 +32,7 @@
                 <td><a href="{{ url('/home/keyword', $website->id) }}">关键词</a></td>
                 <td>
                     <a href="{{ url('/home/pinpai', $website->id) }}">品牌推广</a>
-                    <a href="">推广</a>
+                    <a href="{{ url('/home/tuiguang', $website->id) }}">推广</a>
                     <a href="">百科</a>
                     <a href="">官网</a>
                     <a href="">客服电话</a>

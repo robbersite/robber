@@ -31,8 +31,12 @@ Route::group(['prefix' => 'home', 'middleware' => 'auth'], function(){
 	Route::get('/js/{website_id}', 'JsController@js');
 
 	// 品牌推广
-	Route::get('/pinpai/{website_id}',  'PinpaiController@index');
+	Route::get('/pinpai/{website_id}', 'PinpaiController@index');
 	Route::post('/pinpai', 'PinpaiController@pinpai');
+
+	// 推广
+	Route::get('/tuiguang/{website_id}', 'TuiguangController@index');
+	Route::post('/tuiguang', 'TuiguangController@tuiguang');
 
 	Route::get('/item', function(){
 		return view('item');
@@ -80,6 +84,9 @@ Route::group(['prefix' => 'html'], function(){
 	});
 	Route::get('/pinpaiExtra', function(){
 		return view('html.pinpaiExtra');
+	});
+	Route::get('/tuiguang', function(){
+		return view('html.tuiguang');
 	});
 });
 

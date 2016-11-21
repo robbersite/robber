@@ -17,6 +17,9 @@ a:focus {
 h2{
 	font-weight: 500;
 }
+img{
+	max-width: 100%;
+}
 .header{
 	height: 50px;
 	background-color: #fff;
