@@ -72,8 +72,6 @@ class PinpaiController extends Controller
             $insert = \DB::table('item_pinpais')->insert($input);
         }
         
-        if($insert){
-            return redirect()->back();
-        }
+        return redirect()->back();
     }
 }

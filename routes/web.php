@@ -38,6 +38,10 @@ Route::group(['prefix' => 'home', 'middleware' => 'auth'], function(){
 	Route::get('/tuiguang/{website_id}', 'TuiguangController@index');
 	Route::post('/tuiguang', 'TuiguangController@tuiguang');
 
+	// 官网
+	Route::get('/guanwang/{website_id}', 'GuanwangController@index');
+	Route::post('/guanwang', 'GuanwangController@guanwang');
+
 	Route::get('/item', function(){
 		return view('item');
 	});
@@ -70,6 +74,11 @@ Route::get('/s', function () {
 	$pos_tuiguang = strpos($data, '<div id="robber_pinpai">');
 	$data = insertToStr($data, $pos_tuiguang + 24, $tuiguang);
 
+	// 插入官网(在推广之后)
+	$guanwang = getGuanwang($wd);
+	$pos_guanwang = strpos($data, '<div id="robber_tuiguang">');
+	$data = insertToStr($data, $pos_guanwang + 26, $guanwang);
+
 	// 删除多余的条目
 	$removeChild = '
 	<script type="text/javascript">
@@ -92,6 +101,9 @@ Route::group(['prefix' => 'html'], function(){
 	});
 	Route::get('/tuiguang', function(){
 		return view('html.tuiguang');
+	});
+	Route::get('/guanwang', function(){
+		return view('html.guanwang');
 	});
 });
 
@@ -525,14 +537,139 @@ function getTuiguang($wd){
 		</div>
 		<div class="tuiguang-2-2">
 			'. $item_tuiguang->description .'
+			<div class="tuiguang-3">
+				<a href="'. $website_url .'" class="url" target="_blank">'. $website_url .'</a>
+				<a href="'. $website_url .'" class="date" target="_blank">'. date('Y-m', time()) .'</a>
+				<a href="'. $website_url .'" class="icon-v" target="_blank"></a>
+				<span>-</span>
+				<a href="'. $website_url .'" class="pj" target="_blank">'. rand(0, 9999) .'条评价</a>
+			</div>
 		</div>
 	</div>
-	<div class="tuiguang-3">
-		<a href="'. $website_url .'" class="url" target="_blank">'. $website_url .'</a>
-		<a href="'. $website_url .'" class="date" target="_blank">'. date('Y-m', time()) .'</a>
-		<a href="'. $website_url .'" class="icon-v" target="_blank"></a>
-		<span>-</span>
-		<a href="'. $website_url .'" class="pj" target="_blank">'. rand(0, 9999) .'条评价</a>
+	
+</div><div id="robber_tuiguang"></div>';
+}
+
+function getGuanwang($wd){
+
+	$website = \DB::table('keywords')->where('keyword_default', $wd)->first();
+
+	if(!isset($website)){
+		return null;
+	}else{
+		$item_guanwang = \DB::table('item_guanwangs')->where('website_id', $website->website_id)->first();
+		$website_url = \DB::table('websites')->find($website->website_id)->url;
+
+		$pos_keyword = strpos($item_guanwang->title, $wd);
+		$item_guanwang->title = insertToStr($item_guanwang->title, $pos_keyword, '<em>');
+		$pos_keyword = strpos($item_guanwang->title, $wd);
+		$item_guanwang->title = insertToStr($item_guanwang->title, $pos_keyword + strlen($wd), '</em>');
+	}
+
+	return '<style type="text/css">
+	.guanwang{
+		margin-bottom: 20px;
+		width: 539px!important;
+	}
+	.guanwang-1 h3{
+		font-weight: 400;
+	    font-size: medium;
+	    margin-bottom: 1px;
+	}
+	.guanwang-1 h3 a{
+		color: #00c;
+	}
+	.guanwang-1 h3 a.extra{
+		text-decoration: none;
+		padding-left: 5px;
+    	padding-right: 5px;
+    	background-color: #2b99ff;
+    	display: inline-block;
+	    padding: 2px 5px;
+	    text-align: center;
+	    vertical-align: text-bottom;
+	    font-size: 12px;
+	    line-height: 100%;
+	    font-style: normal;
+	    font-weight: 400;
+	    color: #fff;
+	    overflow: hidden;
+	    margin-left: 10px;
+	}
+	.guanwang-2{
+		margin: -1px 0 0 0;
+		margin: 3px 0 1px;
+	}
+	.guanwang-2-1{
+	    width: 121px;
+	    height: 75px;
+	    margin-top: 6px;
+	    display: inline-block;
+	    overflow: hidden;
+	}
+	.guanwang-2-1 img{
+		width: 121px;
+	    height: 75px;
+	    display: block;
+	}
+	.guanwang-2-2{
+		height: 80px;
+	    margin-top: 2px;
+	    float: right;
+	    width: 402px;
+	    font-size: 13px;
+	}
+	.guanwang-3{
+		margin-top: 5px;
+	}
+	.guanwang-3 a.url, .tuiguang-3 a.date{
+		color: green;
+		line-height: 15px;
+		font-size: 13px;
+		font-family: arial;
+		text-decoration: none;
+	}
+	.guanwang-3 a.icon-v{
+		background: url(https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/static/protocol/https/global/img/icons_5859e57.png) no-repeat 0 0;
+		display: inline-block;
+	    width: 19px;
+	    height: 14px;
+	    vertical-align: text-bottom;
+	    font-style: normal;
+	    overflow: hidden;
+	    background-position: -936px -192px;
+	    border: 1px solid #FFFAFA;
+	    margin: 0 5px 0 3px;
+	}
+	.guanwang-3 a.icon-v:hover{
+		border-color: #ffb300;
+	}
+	.guanwang-3 a.pj{
+		font-size: 13px;
+		color: #666;
+		font-family: arial;
+	}
+	.guanwang-3 span{
+		color: #666;font-size: 13px;
+	}
+</style>
+<div class="guanwang">
+	<div class="guanwang-1">
+		<h3><a href="'. $website_url .'" target="_blank">'. $item_guanwang->title .'</a> <a href="'. $website_url .'" target="_blank" class="extra">官网</a></h3>
+	</div>
+	<div class="guanwang-2">
+		<div class="guanwang-2-1">
+			<a href="'. $website_url .'" target="_blank"><img src="'. $item_guanwang->thumb .'"></a>
+		</div>
+		<div class="guanwang-2-2">
+			'. $item_guanwang->description .'
+			<div class="guanwang-3">
+				<a href="'. $website_url .'" target="_blank" class="url">'. $website_url .'</a>
+				<a href="'. $website_url .'" target="_blank" class="icon-v"></a>
+				<span>-</span>
+				<a href="'. $website_url .'" target="_blank" class="pj">'. rand(0, 9999) .'</a>
+			</div>
+		</div>
 	</div>
 </div>';
 }

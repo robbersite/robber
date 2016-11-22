@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class TuiguangController extends Controller
+class GuanwangController extends Controller
 {
     public function index($website_id)
     {
         $website = \DB::table('websites')->where('id', $website_id)->first();
-        $tuiguang = \DB::table('item_tuiguangs')->where('website_id', $website_id)->first();
-        return view('tuiguang', ['website' => $website, 'tuiguang' => $tuiguang]);
+        $guanwang = \DB::table('item_guanwangs')->where('website_id', $website_id)->first();
+        return view('guanwang', ['website' => $website, 'guanwang' => $guanwang]);
     }
 
-    public function tuiguang(Request $request){
+    public function guanwang(Request $request){
 
         $messages = [
             'title.required' => '标题不能为空',
@@ -36,14 +36,14 @@ class TuiguangController extends Controller
             $input = array_add($input, 'thumb', '/upload/' . $thumb);
         }
 
-        $tuiguang = \DB::table('item_tuiguangs')->where('website_id', request('website_id'))->first();
+        $guanwang = \DB::table('item_guanwangs')->where('website_id', request('website_id'))->first();
 
-        if(count($tuiguang)){
-            $insert = \DB::table('item_tuiguangs')->where('website_id', request('website_id'))->update($input);
+        if(count($guanwang)){
+            $insert = \DB::table('item_guanwangs')->where('website_id', request('website_id'))->update($input);
         }else{
-            $insert = \DB::table('item_tuiguangs')->insert($input);
+            $insert = \DB::table('item_guanwangs')->insert($input);
         }
-
-        return redirect()->back();  
+        
+        return redirect()->back();
     }
 }

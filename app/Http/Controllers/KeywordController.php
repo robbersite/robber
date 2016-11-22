@@ -42,8 +42,6 @@ class KeywordController extends Controller
             ]);
         }
 
-        if($insert){
-            return redirect()->back();
-        }
+        return redirect()->back();
     }
 }
