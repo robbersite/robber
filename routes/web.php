@@ -65,6 +65,11 @@ Route::get('/s', function () {
 	$pos_pinpai_extra = strpos($data, '<div id="content_right" class="cr-offset">');
 	$data = insertToStr($data, $pos_pinpai_extra + 42, $pinpai_extra);
 
+	// 插入推广(在品牌之后)
+	$tuiguang = getTuiguang($wd);
+	$pos_tuiguang = strpos($data, '<div id="robber_pinpai">');
+	$data = insertToStr($data, $pos_tuiguang + 24, $tuiguang);
+
 	// 删除多余的条目
 	$removeChild = '
 	<script type="text/javascript">
@@ -342,7 +347,7 @@ function getPinpai($wd){
 			<a href="'. $website_url .'" class="last" target="_blank">家用电器</a>
 		</div>
 	</div>
-</div>
+</div><div id="robber_pinpai"></div>
 ';
 }
 
@@ -405,6 +410,129 @@ function getPingpaiExtra($wd){
 			<li><span>■</span> <a href="'. $website_url .'" target="_blank">'. $item_pinpai->extra_list .'</a></li>
 			<li><span>■</span> <a href="'. $website_url .'" target="_blank">'. $item_pinpai->extra_list .'</a></li>
 		</ul>
+	</div>
+</div>';
+}
+
+// 获取tuiguang
+function getTuiguang($wd){
+
+	$website = \DB::table('keywords')->where('keyword_default', $wd)->first();
+
+	if(!isset($website)){
+		return null;
+	}else{
+		$item_tuiguang = \DB::table('item_tuiguangs')->where('website_id', $website->website_id)->first();
+		$website_url = \DB::table('websites')->find($website->website_id)->url;
+
+		$pos_keyword = strpos($item_tuiguang->title, $wd);
+		$item_tuiguang->title = insertToStr($item_tuiguang->title, $pos_keyword, '<em>');
+		$pos_keyword = strpos($item_tuiguang->title, $wd);
+		$item_tuiguang->title = insertToStr($item_tuiguang->title, $pos_keyword + strlen($wd), '</em>');
+	}
+
+	return '<style type="text/css">
+	.tuiguang{
+		background-color: #FFFAFA !important;
+		margin-bottom: 20px;
+		width: 539px!important;
+	}
+	.tuiguang-1 h3{
+		font-weight: 400;
+	    font-size: medium;
+	    margin-bottom: 1px;
+	}
+	.tuiguang-1 h3 a{
+		color: #00c;
+	}
+	.tuiguang-1 h3 a.extra{
+		background: none repeat scroll 0 0 #f5f5f5;
+	    color: #666;
+	    font-size: 12px;
+	    float: right;
+	    margin-bottom: -20px;
+	    position: relative;
+	}
+	.tuiguang-2{
+		margin: -1px 0 0 0;
+		margin: 3px 0 1px;
+	}
+	.tuiguang-2-1{
+	    width: 121px;
+	    height: 75px;
+	    margin-top: 6px;
+	    display: inline-block;
+	    overflow: hidden;
+	}
+	.tuiguang-2-1 img{
+		width: 121px;
+	    height: 75px;
+	    display: block;
+	}
+	.tuiguang-2-2{
+		height: 80px;
+	    margin-top: 2px;
+	    float: right;
+	    width: 402px;
+	    font-size: 13px;
+	}
+	.tuiguang-3{
+		margin-top: 5px;
+	}
+	.tuiguang-3 a.url, .tuiguang-3 a.date{
+		color: green;
+		line-height: 15px;
+		font-size: 13px;
+		font-family: arial;
+		text-decoration: none;
+	}
+	.tuiguang-3 a.icon-v{
+		background: url(https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/static/protocol/https/global/img/icons_5859e57.png) no-repeat 0 0;
+		display: inline-block;
+	    width: 19px;
+	    height: 14px;
+	    vertical-align: text-bottom;
+	    font-style: normal;
+	    overflow: hidden;
+	    background-position: -936px -192px;
+	    border: 1px solid #FFFAFA;
+	    margin: 0 5px 0 3px;
+	}
+	.tuiguang-3 a.icon-v:hover{
+		border-color: #ffb300;
+	}
+	.tuiguang-3 a.pj{
+		font-size: 13px;
+		color: #666;
+		font-family: arial;
+	}
+	.tuiguang-3 span{
+		color: #666;font-size: 13px;
+	}
+</style>
+<div class="tuiguang">
+	<div class="tuiguang-1">
+		<h3>
+			<a href="'. $website_url .'" target="_blank">'. $item_tuiguang->title .'</a>
+			<a href="'. $website_url .'" class="extra" target="_blank">广告</a>
+		</h3>
+	</div>
+	<div class="tuiguang-2">
+		<div class="tuiguang-2-1">
+			<a href="'. $website_url .'" target="_blank">
+				<img src="'. $item_tuiguang->thumb .'">
+			</a>
+		</div>
+		<div class="tuiguang-2-2">
+			'. $item_tuiguang->description .'
+		</div>
+	</div>
+	<div class="tuiguang-3">
+		<a href="'. $website_url .'" class="url" target="_blank">'. $website_url .'</a>
+		<a href="'. $website_url .'" class="date" target="_blank">'. date('Y-m', time()) .'</a>
+		<a href="'. $website_url .'" class="icon-v" target="_blank"></a>
+		<span>-</span>
+		<a href="'. $website_url .'" class="pj" target="_blank">'. rand(0, 9999) .'条评价</a>
 	</div>
 </div>';
 }
