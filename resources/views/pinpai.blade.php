@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('content')
-	<h2>品牌推广设置 <small><a href="">设置参考</a> <a href="{{ url('/home') }}">所有站点</a></small></h2>
+	<h2>品牌推广设置 <small><a href="{{ url('/home') }}">所有站点</a></small></h2>
     <form action="{{ url('/home/pinpai') }}" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
         <input type="hidden" name="website_id" value="{{ $website->id }}">
@@ -41,7 +41,7 @@
                 </td>
             </tr>
             <tr>
-                <td width="200">栏目图</td>
+                <td width="200">栏目图一</td>
                 <td>
                     <input type="file" name="nav_thumb" class="form-control"> <small>*</small>
                 </td>
@@ -51,6 +51,22 @@
                 <td>
                 @if(isset($pinpai->nav_thumb))
                     <img src="{{ $pinpai->nav_thumb }}">
+                @else
+                    没有上传？
+                @endif
+                </td>
+            </tr>
+            <tr>
+                <td width="200">栏目图二</td>
+                <td>
+                    <input type="file" name="nav_thumb_1" class="form-control"> <small>*</small>
+                </td>
+            </tr>
+            <tr>
+                <td width="200"></td>
+                <td>
+                @if(isset($pinpai->nav_thumb_1))
+                    <img src="{{ $pinpai->nav_thumb_1 }}">
                 @else
                     没有上传？
                 @endif

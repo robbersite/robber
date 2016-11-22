@@ -59,6 +59,11 @@ class PinpaiController extends Controller
             $input = array_add($input, 'nav_thumb', '/upload/' . $nav_thumb);
         }
 
+        if ($request->hasFile('nav_thumb_1')) {
+            $nav_thumb = $request->file('nav_thumb_1')->store('images', 'upload');
+            $input = array_add($input, 'nav_thumb_1', '/upload/' . $nav_thumb);
+        }
+
         if ($request->hasFile('extra_thumb')) {
             $extra_thumb = $request->file('extra_thumb')->store('images', 'upload');
             $input = array_add($input, 'extra_thumb', '/upload/' . $extra_thumb);

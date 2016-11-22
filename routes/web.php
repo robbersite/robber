@@ -42,6 +42,14 @@ Route::group(['prefix' => 'home', 'middleware' => 'auth'], function(){
 	Route::get('/guanwang/{website_id}', 'GuanwangController@index');
 	Route::post('/guanwang', 'GuanwangController@guanwang');
 
+	// 官网
+	Route::get('/baike/{website_id}', 'BaikeController@index');
+	Route::post('/baike', 'BaikeController@baike');
+
+	// 客服电话
+	Route::get('/kefu/{website_id}', 'KefuController@index');
+	Route::post('/kefu', 'KefuController@kefu');
+
 	Route::get('/item', function(){
 		return view('item');
 	});
@@ -71,13 +79,23 @@ Route::get('/s', function () {
 
 	// 插入推广(在品牌之后)
 	$tuiguang = getTuiguang($wd);
-	$pos_tuiguang = strpos($data, '<div id="robber_pinpai">');
-	$data = insertToStr($data, $pos_tuiguang + 24, $tuiguang);
+	$pos_tuiguang = strpos($data, '<div id="robber_pinpai"></div>');
+	$data = insertToStr($data, $pos_tuiguang + 30, $tuiguang);
 
 	// 插入官网(在推广之后)
 	$guanwang = getGuanwang($wd);
-	$pos_guanwang = strpos($data, '<div id="robber_tuiguang">');
-	$data = insertToStr($data, $pos_guanwang + 26, $guanwang);
+	$pos_guanwang = strpos($data, '<div id="robber_tuiguang"></div>');
+	$data = insertToStr($data, $pos_guanwang + 32, $guanwang);
+
+	// 插入百科(在官网之后)
+	$baike = getBaike($wd);
+	$pos_baike = strpos($data, '<div id="robber_guanwang"></div>');
+	$data = insertToStr($data, $pos_baike + 32, $baike);
+
+	// 插入客服(在百科之后)
+	$baike = getKefu($wd);
+	$pos_baike = strpos($data, '<div id="robber_baike"></div>');
+	$data = insertToStr($data, $pos_baike + 29, $baike);
 
 	// 删除多余的条目
 	$removeChild = '
@@ -104,6 +122,12 @@ Route::group(['prefix' => 'html'], function(){
 	});
 	Route::get('/guanwang', function(){
 		return view('html.guanwang');
+	});
+	Route::get('/baike', function(){
+		return view('html.baike');
+	});
+	Route::get('/kefu', function(){
+		return view('html.kefu');
 	});
 });
 
@@ -349,7 +373,7 @@ function getPinpai($wd){
 		</div>
 		<div class="pinpai-2-2">
 			<a href="'. $website_url .'" target="_blank"><img src="'. $item_pinpai->nav_thumb .'"></a>
-			<a href="'. $website_url .'" target="_blank"><img src="'. $item_pinpai->nav_thumb .'"></a>
+			<a href="'. $website_url .'" target="_blank"><img src="'. $item_pinpai->nav_thumb_1 .'"></a>
 		</div>
 		<div class="pinpai-2-3">
 			<a href="'. $website_url .'" target="_blank">家用电器</a>
@@ -418,8 +442,6 @@ function getPingpaiExtra($wd){
 	</div>
 	<div class="pinpai-extra-3">
 		<ul>
-			<li><span>■</span> <a href="'. $website_url .'" target="_blank">'. $item_pinpai->extra_list .'</a></li>
-			<li><span>■</span> <a href="'. $website_url .'" target="_blank">'. $item_pinpai->extra_list .'</a></li>
 			<li><span>■</span> <a href="'. $website_url .'" target="_blank">'. $item_pinpai->extra_list .'</a></li>
 		</ul>
 	</div>
@@ -670,6 +692,179 @@ function getGuanwang($wd){
 				<a href="'. $website_url .'" target="_blank" class="pj">'. rand(0, 9999) .'</a>
 			</div>
 		</div>
+	</div>
+</div><div id="robber_guanwang"></div>';
+}
+
+function getBaike($wd){
+
+	$website = \DB::table('keywords')->where('keyword_default', $wd)->first();
+
+	if(!isset($website)){
+		return null;
+	}else{
+		$item_baike = \DB::table('item_baikes')->where('website_id', $website->website_id)->first();
+		$website_url = \DB::table('websites')->find($website->website_id)->url;
+	}
+
+	return '<style type="text/css">
+	.baike{
+		margin-bottom: 20px;
+		width: 539px!important;
+	}
+	.baike-1 h3{
+		font-weight: 400;
+	    font-size: medium;
+	    margin-bottom: 1px;
+	}
+	.baike-1 h3 a{
+		color: #00c;
+	}
+	.baike-2{
+		margin: -1px 0 0 0;
+		margin: 3px 0 1px;
+	}
+	.baike-2-1{
+	    width: 121px;
+	    margin-top: 6px;
+	    display: inline-block;
+	    overflow: hidden;
+	}
+	.baike-2-1 img{
+		width: 121px;
+	    display: block;
+	}
+	.baike-2-2{
+		height: 80px;
+	    margin-top: 2px;
+	    float: right;
+	    width: 402px;
+	    font-size: 13px;
+	}
+	.baike-3{
+		margin-top: 5px;
+	}
+	.baike-3 a.url, .baike-3 a.date{
+		color: green;
+		line-height: 15px;
+		font-size: 13px;
+		font-family: arial;
+		text-decoration: none;
+	}
+	.baike-3 a.icon-v{
+		background: url(//www.baidu.com/cache/global/img/aladdinIcon-1.0.gif) no-repeat 0 2px;
+	    color: #77C;
+	    display: inline-block;
+	    font-size: 13px;
+	    height: 12px;
+	    width: 16px;
+	    text-decoration: none;
+	    zoom: 1;
+	}
+</style>
+<div class="baike">
+	<div class="baike-1">
+		<h3><a href=""><em>'. $wd .'</em>_百度百科</a></h3>
+	</div>
+	<div class="baike-2">
+		<div class="baike-2-1">
+			<a href="'. $website_url .'" target="_blank"><img src="'. $item_baike->thumb .'"></a>
+		</div>
+		<div class="baike-2-2">
+			'. $item_baike->description .'
+			<div class="baike-3">
+				<a href="http://baike.baidu.com" class="url" target="_blank">baike.baidu.com</a>
+				<span>-</span>
+				<a href="http://baike.baidu.com" class="icon-v" target="_blank"></a>
+			</div>
+		</div>
+	</div>
+</div><div id="robber_baike"></div>';
+}
+
+function getKefu($wd){
+
+	$website = \DB::table('keywords')->where('keyword_default', $wd)->first();
+
+	if(!isset($website)){
+		return null;
+	}else{
+		$item_kefu = \DB::table('item_kefus')->where('website_id', $website->website_id)->first();
+		$website_url = \DB::table('websites')->find($website->website_id)->url;
+	}
+
+	return '<style type="text/css">
+	.kefu{
+		margin-bottom: 20px;
+		margin-bottom: 14px;
+    	border-collapse: collapse;
+	    width: 538px;
+	    font-size: 13px;
+	    line-height: 1.54;
+	    word-wrap: break-word;
+	    word-break: break-word;
+	}
+	h3{
+		line-height: 1.54;
+    	margin-bottom: 5px;
+	    font-weight: 400;
+	    font-size: medium;
+	    text-decoration: underline;
+	    color: #00c;
+	}
+	h3 a{
+		color: #00c;
+	}
+	.kefu-1{
+		width: 518px;
+	    padding: 9px;
+	    border: 1px solid #e3e3e3;
+	    border-bottom-color: #e0e0e0;
+	    border-right-color: #ececec;
+	    box-shadow: 1px 2px 1px rgba(0,0,0,.072);
+	    -webkit-box-shadow: 1px 2px 1px rgba(0,0,0,.072);
+	    -moz-box-shadow: 1px 2px 1px rgba(0,0,0,.072);
+	    -o-box-shadow: 1px 2px 1px rgba(0,0,0,.072);
+	}
+	.kefu-1-1{
+		margin-right: 10px;
+		width: 122px;
+		float: left;
+	}
+	.kefu-1-1 a{
+	    display: inline-block;
+	    width: 121px;
+	    height: 56px;
+	    background: url(//www.baidu.com/aladdin/img/tools/tools-5.png) no-repeat;
+	    background-position: -432px 0;
+	}
+	.kefu-1-2{
+		width: 375px;
+		border-left: 1px solid #eee;
+	    padding-left: 10px;
+	    min-height: 56px;
+	    float: left;
+	}
+	.kefu-1-2 span{
+		padding-top: 0;
+	    white-space: nowrap;
+	    font-size: 16px;
+	    line-height: 1.54;
+	    padding-bottom: 2px;
+	    padding-right: 14px;
+	    font-family: arial,"微软雅黑","黑体";
+	}
+</style>
+<div class="kefu">
+	<h3><a href="'. $website_url .'" target="_blank"><em>'. $wd .'</em>客服电话</a></h3>
+	<div class="kefu-1">
+		<div class="kefu-1-1">
+			<a href="'. $website_url .'" target="_blank"></a>
+		</div>
+		<div class="kefu-1-2">
+			<span>'. $item_kefu->title .'&nbsp;&nbsp;&nbsp;&nbsp;'. $item_kefu->tel .'</span>
+		</div>
+		<div style="clear:both;"></div>
 	</div>
 </div>';
 }
