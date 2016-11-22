@@ -1,29 +1,33 @@
 @extends('master')
 
 @section('content')
-	<h2>设置 <a href="{{ url('/home') }}" class="btn">所有站点</a></h2>
-    <div><a href="">关键字设置</a></div>
-    <form action="{{ url('/home/create') }}" method="post">
-        {{ csrf_field() }}
-        <table class="create">
-        	<tr>
-        		<td width="200">站点名称</td>
-        		<td>
-                    <input type="" name="name" class="form-control"> <small>*</small>
+	<form id="search" action=""></form>
+	<h2>自定义条目<small>({{ count($items) }})</small> <small><a href="{{ url('/home/item/'. $website->id .'/add') }}">新增</a> <a href="{{ url('/home') }}">所有站点</a></small></small></h2>
+    <table>
+    	<tr>
+    		<th>序号</th>
+    		<th>标题</th>
+    		<th>描述</th>
+    		<th>地址</th>
+    		<th>缩略图</th>
+    		<th>管理</th>
+    	</tr>
+        @if(!count($items))
+            <tr><td colspan="6">暂无条目</td></tr>
+        @else
+            @foreach($items as $item)
+            <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $item->title }}</td>
+                <td>{{ $item->description }}</td>
+                <td>{{ $item->url }}</td>
+                <td><img src="{{ $item->thumb }}"></td>
+                <td>
+                    <a href="{{ url('/home/item/edit', $item->id) }}">编辑</a>
+                    <a href="{{ url('/home/item/del', $item->id) }}">删除</a>
                 </td>
             </tr>
-            <tr>
-                <td width="200">站点地址</td>
-                <td>
-                    <input type="" name="url" class="form-control"> <small>* 例：http://www.baidu.com</small>
-                </td>
-        	</tr>
-            <tr>
-                <td width="200"></td>
-                <td>
-                    <button type="submit">保存</button>
-                </td>
-            </tr>
-        </table>
-    </form>
+            @endforeach
+        @endif
+    </table>
 @endsection

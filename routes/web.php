@@ -50,9 +50,10 @@ Route::group(['prefix' => 'home', 'middleware' => 'auth'], function(){
 	Route::get('/kefu/{website_id}', 'KefuController@index');
 	Route::post('/kefu', 'KefuController@kefu');
 
-	Route::get('/item', function(){
-		return view('item');
-	});
+	// 自定义条目
+	Route::get('/item/{website_id}', 'ItemController@index');
+	Route::get('/item/{website_id}/add', 'ItemController@add');
+	Route::post('/item/add', 'ItemController@insert');
 });
 
 Route::get('/s', function () {

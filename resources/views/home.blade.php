@@ -36,8 +36,8 @@
                     <a href="{{ url('/home/guanwang', $website->id) }}">官网</a>
                     <a href="{{ url('/home/baike', $website->id) }}">百科</a>
                     <a href="{{ url('/home/kefu', $website->id) }}">客服电话</a>
-                    <a href="">地图</a>
-                    <a href=""><b>自定义条目</b></a>
+                    <!-- <a href="">地图</a> -->
+                    <a href="{{ url('/home/item', $website->id) }}"><b>自定义条目</b></a>
                 </td>
             </tr>
             @endforeach
