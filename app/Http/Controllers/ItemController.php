@@ -48,4 +48,17 @@ class ItemController extends Controller
     
         return redirect()->back();
     }
+
+    public function edit($item_id, $website_id)
+    {
+    	$item = \DB::table('items')->where('id', $item_id)->first();
+    	$website = \DB::table('websites')->where('id', $website_id)->first();
+    	return view('itemEdit', ['item' => $item, 'website' => $website]);
+    }
+
+    public function del($item_id, $website_id)
+   	{	
+   		\DB::table('items')->where('id', $item_id)->delete();
+   		return redirect()->action('ItemController@index', $website_id);
+   	}
 }

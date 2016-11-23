@@ -23,8 +23,8 @@
                 <td>{{ $item->url }}</td>
                 <td><img src="{{ $item->thumb }}"></td>
                 <td>
-                    <a href="{{ url('/home/item/edit', $item->id) }}">编辑</a>
-                    <a href="{{ url('/home/item/del', $item->id) }}">删除</a>
+                    <a href="{{ url('/home/item/edit/' . $item->id . '/website/' .$website->id) }}">编辑</a>
+                    <a href="{{ url('/home/item/del/' . $item->id . '/website/' .$website->id) }}">删除</a>
                 </td>
             </tr>
             @endforeach
