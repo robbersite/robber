@@ -55,6 +55,7 @@ Route::group(['prefix' => 'home', 'middleware' => 'auth'], function(){
 	Route::get('/item/{website_id}/add', 'ItemController@add');
 	Route::post('/item/add', 'ItemController@insert');
 	Route::get('/item/edit/{item_id}/website/{website_id}', 'ItemController@edit');
+	Route::post('item/update', 'ItemController@update');
 	Route::get('/item/del/{item_id}/website/{website_id}', 'ItemController@del');
 });
 

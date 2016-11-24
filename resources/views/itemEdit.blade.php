@@ -1,9 +1,10 @@
 @extends('master')
 
 @section('content')
-    <h2>新增条目 <small><a href="{{ url('/home/item', ['website_id' => $website->id]) }}">所有条目</a></small></h2>
+    <h2>编辑条目 <small><a href="{{ url('/home/item', ['website_id' => $website->id]) }}">所有条目</a></small></h2>
     <form action="{{ url('/home/item/update') }}" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
+        <input type="hidden" name="item_id" value="{{ $item->id }}">
         <table class="create">
             <tr>
                 <td width="200">标题</td>

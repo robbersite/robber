@@ -46,7 +46,7 @@ class ItemController extends Controller
 
         $insert = \DB::table('items')->insert($input);
     
-        return redirect()->back();
+        // return redirect()->back();
     }
 
     public function edit($item_id, $website_id)
@@ -54,6 +54,36 @@ class ItemController extends Controller
     	$item = \DB::table('items')->where('id', $item_id)->first();
     	$website = \DB::table('websites')->where('id', $website_id)->first();
     	return view('itemEdit', ['item' => $item, 'website' => $website]);
+    }
+
+    public function update(Request $request){
+
+        $messages = [
+            'title.required' => '标题不能为空',
+            'description.required' => '描述不能为空',
+            'url.required' => '地址不能为空'
+        ];
+
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required',
+            'url' => 'required'
+        ], $messages);
+
+        $input = [
+            'title' => request('title'),
+            'description' => request('description'),
+            'url' => request('url'),
+        ];
+
+        if ($request->hasFile('thumb')) {
+            $thumb = $request->file('thumb')->store('images', 'upload');
+            $input = array_add($input, 'thumb', '/upload/' . $thumb);
+        }
+
+        $insert = \DB::table('items')->where('id', request('item_id'))->update($input);
+    
+        return redirect()->back();
     }
 
     public function del($item_id, $website_id)

@@ -18,7 +18,7 @@ class CreateItemsTable extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('url');
-            $table->string('thumb');
+            $table->string('thumb')->nullable();
             $table->integer('website_id');
             $table->foreign('website_id')->references('id')->on('websites');
             $table->timestamps();
