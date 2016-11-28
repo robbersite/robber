@@ -2,7 +2,14 @@
 
 @section('content')
 	<form id="search" action=""></form>
-	<h2>所有站点<small>({{ count($websites) }})</small> <small><a href="">添加和续费站点请联系扣扣：605159011</a></small><input type="" name="" form="search" placeholder="站点名称或地址"></h2>
+	<h2>所有站点<small>({{ count($websites) }})</small>
+        <small>
+            @if(Gate::allows('add-website'))
+                <a href="{{ url('/home/create') }}">新增</a>
+            @endif
+        </small>
+        <input type="" name="" form="search" placeholder="站点名称或地址">
+    </h2>
     <table>
     	<tr>
     		<th>序号</th>

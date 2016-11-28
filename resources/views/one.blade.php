@@ -113,7 +113,7 @@
 	            <p>SEO推广人员、站长、企业网络营销人员等等都可以轻松操作。</p>
         	</div>
 	    </div>
-	    <div class="section">
+	    <!--<div class="section">
 	    	<div class="container">
 	            <h2>服务价格</h2>
 	            <p>便宜的不像收费服务</p>
@@ -165,7 +165,7 @@
 	            <p>付款之前请联系扣扣：605159011，以便确认用户名并开通服务。</p>
 	            <p><img src="/images/pay-zhifubao.jpg"></p>
         	</div>
-	    </div>
+	    </div>-->
 	    <div class="section fp-auto-height">
             <div class="container">
 	            <p>
@@ -183,12 +183,12 @@
 		    $('#fullpage').fullpage({
 		        'verticalCentered': true,
 		        'css3': true,
-		        'sectionsColor': ['#fff', '#f0f0f0', '#fff', '#f0f0f0', '#fff', '#f0f0f0','#fff', '#f0f0f0', '#fff'],
-		        'anchors': ['page1', 'page2', 'page3', 'page4', 'page5', 'page6', 'page7', 'page8', 'page9'],
+		        'sectionsColor': ['#fff', '#f8f8f8', '#fff', '#f8f8f8', '#fff'],
+		        'anchors': ['page1', 'page2', 'page3', 'page4', 'page5'],
 		        'navigation': true,
 		        'navigationColor': '#2196f3',
 		        'navigationPosition': 'right',
-		        'navigationTooltips': ['极盗者', '定制', '全网', '体验', '服务价格', '支付', '支付 - 微信', '支付 - 支付宝', '极盗者'],
+		        'navigationTooltips': ['极盗者', '定制', '全网', '体验', '极盗者'],
 		        // 'loopBottom': true,
 		    })
 		})
