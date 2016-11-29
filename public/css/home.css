@@ -165,3 +165,12 @@ textarea{
 textarea:focus{
 	border: solid 1px #2196f3;
 }
+.color-grey{
+	color: #999;
+}
+.color-green{
+	color: #439a46;
+}
+.color-red{
+	color: #e51c23;
+}

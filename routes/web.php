@@ -145,7 +145,10 @@ Route::group(['prefix' => 'admin'], function(){
 
 	Route::group(['middleware' => 'auth.admin:admin'], function(){
 		Route::get('/', function(){
-			return view('admin.websites');
+			return redirect('/admin/users');
 		});
+		Route::get('/users', 'Admin\UserController@index');
+		Route::get('/setUserGroup/{id}', 'Admin\UserController@setUserGroup');
+		Route::get('/websites', 'Admin\WebsiteController@index');
 	});
 });

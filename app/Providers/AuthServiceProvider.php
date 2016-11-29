@@ -25,9 +25,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
         Gate::define('add-website', function ($user) {
-            return $user->id == 8;
+            return $user->group_id == 1;
         });
     }
 }

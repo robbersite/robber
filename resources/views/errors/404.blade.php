@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>404 - 极盗者</title>
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300" rel="stylesheet" type="text/css">
         <style>
             html, body {
                 height: 100%;
@@ -12,9 +13,10 @@
                 padding: 0;
                 width: 100%;
                 color: #B0BEC5;
+                color: #000;
                 display: table;
-                font-weight: 300;
-                font-family: 'Lato', sans-serif;
+                font-weight: 100;
+                font-family: 'Lato';
             }
 
             .container {
@@ -29,15 +31,29 @@
             }
 
             .title {
-                font-size: 36px;
-                margin-bottom: 40px;
+                font-size: 72px;
+            }
+
+            p{
+                font-size: 18px;
+                font-weight: 300;
+            }
+
+            a{
+                color: #999;
+                text-decoration: none;
+            }
+
+            a:hover{
+                text-decoration: underline;
             }
         </style>
     </head>
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">PHP是世界上最好的语言。</div>
+                <div class="title">404</div>
+                <p>Build On <a href="https://laravel.com" target="_blank">Laravel</a></p>
             </div>
         </div>
     </body>
