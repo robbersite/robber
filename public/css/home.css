@@ -93,9 +93,6 @@ img{
 	padding: 15px;
 	border-bottom: solid 1px #f0f0f0;
 }
-a.btn{
-	font-size: 14px;
-}
 .form-control{
 	border: solid 1px #e7e7e7;
 	outline: none;
@@ -146,7 +143,7 @@ table.create small{
 	color: #999;
 }
 table p{
-	margin:5px 0;
+	
 }
 table select{
 	width: 304px;
@@ -165,12 +162,18 @@ textarea{
 textarea:focus{
 	border: solid 1px #2196f3;
 }
-.color-grey{
+.color-default{
 	color: #999;
 }
-.color-green{
+.color-success{
 	color: #439a46;
 }
-.color-red{
+.color-danger{
 	color: #e51c23;
+}
+.color-warning{
+	color: #ff9800;
+}
+.color-info{
+	color: #862197;
 }

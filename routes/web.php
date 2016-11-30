@@ -10,54 +10,72 @@ Route::get('/', function () {
 });
 
 // 用户中心
-Route::group(['prefix' => 'home', 'middleware' => 'auth'], function(){
+Route::group(['middleware' => 'auth'], function(){
+
+	// 管理中心
+	Route::group(['prefix' => 'home'], function(){
+		Route::get('/', 'HomeController@index');
+		Route::get('/reset', function(){
+			return view('reset');
+		});
+		Route::post('/reset', 'HomeController@reset');
+	});
 
 	// 站点管理
-	Route::get('/', 'HomeController@index');
-
-	// 通过中间件和Gates来控制普通用户和代理用户
-	Route::group(['middleware' => 'user'], function(){
+	Route::group(['prefix' => 'website'], function(){
+		Route::get('/', 'WebsiteController@index');
 		Route::get('/create', function(){
-			return view('createWebsite');
+			return view('websiteAdd');
 		});
-		Route::post('/create', 'HomeController@insertWebsite');
-		Route::get('/delete', 'HomeController@deleteWebsite');
+
+		// 通过中间件和Gates来控制普通用户和代理用户
+		Route::group(['middleware' => 'user'], function(){
+			Route::get('/create', function(){
+				return view('websiteAdd');
+			});
+			Route::post('/create', 'WebsiteController@create');
+		});
+
+		// 资源访问控制：不允许当前用户对其他站点的操作
+		Route::group(['middleware' => 'user:action'], function(){
+			
+			// 关键字
+			Route::get('/{website_id}/keyword', 'KeywordController@index');
+			Route::post('/keyword', 'KeywordController@keyword');
+
+			// 获取代码
+			Route::get('/js/{website_id}', 'JsController@js');
+
+			// 品牌推广
+			Route::get('/pinpai/{website_id}', 'PinpaiController@index');
+			Route::post('/pinpai', 'PinpaiController@pinpai');
+
+			// 推广
+			Route::get('/tuiguang/{website_id}', 'TuiguangController@index');
+			Route::post('/tuiguang', 'TuiguangController@tuiguang');
+
+			// 官网
+			Route::get('/guanwang/{website_id}', 'GuanwangController@index');
+			Route::post('/guanwang', 'GuanwangController@guanwang');
+
+			// 官网
+			Route::get('/baike/{website_id}', 'BaikeController@index');
+			Route::post('/baike', 'BaikeController@baike');
+
+			// 客服电话
+			Route::get('/kefu/{website_id}', 'KefuController@index');
+			Route::post('/kefu', 'KefuController@kefu');
+
+			// 自定义条目
+			Route::get('/item/{website_id}', 'ItemController@index');
+			Route::get('/item/{website_id}/add', 'ItemController@add');
+			Route::post('/item/add', 'ItemController@insert');
+			Route::get('/item/edit/{item_id}/website/{website_id}', 'ItemController@edit');
+			Route::post('item/update', 'ItemController@update');
+			Route::get('/item/del/{item_id}/website/{website_id}', 'ItemController@del');
+		});
+		
 	});
-	
-	// 关键字
-	Route::get('/keyword/{website_id}',  'KeywordController@index');
-	Route::post('/keyword', 'KeywordController@keyword');
-
-	// 获取代码
-	Route::get('/js/{website_id}', 'JsController@js');
-
-	// 品牌推广
-	Route::get('/pinpai/{website_id}', 'PinpaiController@index');
-	Route::post('/pinpai', 'PinpaiController@pinpai');
-
-	// 推广
-	Route::get('/tuiguang/{website_id}', 'TuiguangController@index');
-	Route::post('/tuiguang', 'TuiguangController@tuiguang');
-
-	// 官网
-	Route::get('/guanwang/{website_id}', 'GuanwangController@index');
-	Route::post('/guanwang', 'GuanwangController@guanwang');
-
-	// 官网
-	Route::get('/baike/{website_id}', 'BaikeController@index');
-	Route::post('/baike', 'BaikeController@baike');
-
-	// 客服电话
-	Route::get('/kefu/{website_id}', 'KefuController@index');
-	Route::post('/kefu', 'KefuController@kefu');
-
-	// 自定义条目
-	Route::get('/item/{website_id}', 'ItemController@index');
-	Route::get('/item/{website_id}/add', 'ItemController@add');
-	Route::post('/item/add', 'ItemController@insert');
-	Route::get('/item/edit/{item_id}/website/{website_id}', 'ItemController@edit');
-	Route::post('item/update', 'ItemController@update');
-	Route::get('/item/del/{item_id}/website/{website_id}', 'ItemController@del');
 });
 
 Route::get('/s', function () {

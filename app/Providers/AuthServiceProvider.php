@@ -25,6 +25,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        // 控制普通用户和代理用户对多站点的新增
         Gate::define('add-website', function ($user) {
             return $user->group_id == 1;
         });

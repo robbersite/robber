@@ -11,15 +11,14 @@
 			<a href="{{ url('/') }}">极盗者</a>
 		</div>
 		<div class="header-nav">
-			<a href="{{ url('/home') }}" class="active">站点</a>
+			<a href="{{ url('/home') }}"  @if(\Route::current()->uri() == 'home')class="active"@endif>个人</a>
+			<a href="{{ url('/website') }}" @if(\Route::current()->uri() == 'website')class="active"@endif>站点</a>
 		</div>
 		<div class="header-user">
 			<small>
 			@if (Auth::guard()->check())           
         		{{ Auth::guard()->user()->name }}
-        		<a href="">个人信息</a>
-        		<a href="{{ url('/logout') }}">修改密码</a>
-        		<a href="{{ url('/logout') }}">退出</a>
+        		<a href="{{ url('/logout') }}">登出</a>
         	@endif
         	</small>
 		</div>

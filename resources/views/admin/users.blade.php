@@ -16,10 +16,10 @@
     	<tr>
     		<td>{{ $loop->index + 1 }}</td>
     		<td>{{ $user->name }}</td>
-    		<td>{{ $user->email }}</td>
+    		<td>{{ $user->email }} <span class="color-green" style="float:right;">已验证</span></td>
     		<td>
                 @if($user->group_id === 1)
-                    <span class="color-green">代理用户</span>
+                    <span class="color-red">代理用户</span>
                 @else
                     <span class="color-grey">普通用户</span>
                 @endif
@@ -28,10 +28,10 @@
     		<td>
                 @if($user->group_id === 1)
                     <a href="{{ url('/admin/setUserGroup', $user->id) }}">取消代理</a>
-                    <a href="{{ url('/admin/user/website', $user->id) }}">站点</a>
                 @else
                     <a href="{{ url('/admin/setUserGroup', $user->id) }}">设为代理</a>
                 @endif
+                <a href="{{ url('/admin/user/website', $user->id) }}">站点</a>
                 <a href="">删除</a>
             </td>
     	</tr>

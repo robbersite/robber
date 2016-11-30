@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 class KeywordController extends Controller
 {   
     public function index($website_id){
-
         $website = \DB::table('websites')->where('id', $website_id)->first();
         $keyword = \DB::table('keywords')->where('website_id', $website_id)->first();
         return view('keyword', ['website' => $website, 'keyword' => $keyword]);
