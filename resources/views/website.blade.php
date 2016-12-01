@@ -34,7 +34,7 @@
                 <td>{{ date('Y-m-d', \DB::table('website_orders')->where('website_id', $website->id)->first()->start) }}</td>
                 <td>{{ date('Y-m-d', \DB::table('website_orders')->where('website_id', $website->id)->first()->stop) }}</td>
                 <td>
-                    <a href="">获取代码</a>
+                    <a href="{{ url('/website/'. $website->id .'/js') }}">获取代码</a>
                     <a href="{{ url('/website/'. $website->id .'/keyword') }}">关键词</a>
                     <a href="{{ url('/website/pinpai', $website->id) }}">品牌推广</a>
                     <a href="{{ url('/website/tuiguang', $website->id) }}">推广</a>
@@ -42,7 +42,7 @@
                     <a href="{{ url('/website/baike', $website->id) }}">百科</a>
                     <a href="{{ url('/website/kefu', $website->id) }}">客服电话</a>
                     <!-- <a href="">地图</a> -->
-                    <a href="{{ url('/website/item', $website->id) }}"><b>自定义条目</b></a>
+                    <a href="{{ url('/website/item', $website->id) }}">自定义条目</a>
                 </td>
             </tr>
             @endforeach

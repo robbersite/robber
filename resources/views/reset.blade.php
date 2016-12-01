@@ -6,13 +6,13 @@
     {{ csrf_field() }}
     <table class="create">
         <tr>
-            <td width="200">新密码</td>
+            <td width="200"><b>新密码</b></td>
             <td>
                 <input type="password" name="password" class="form-control"> <small>*</small>
             </td>
         </tr>
         <tr>
-            <td width="200">确认密码</td>
+            <td width="200"><b>确认密码</b></td>
             <td>
                 <input type="password" name="password_confirmation" class="form-control"> <small>*</small>
             </td>

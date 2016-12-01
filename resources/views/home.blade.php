@@ -12,8 +12,8 @@
         <tr>
             <td width="200"><b>邮箱</b></td>
             <td>
-                <p>{{ $user->email }}</p>
-                <p>未验证 <a href="">发送验证链接</a></p>
+                {{ $user->email }}
+                未验证(<a href="">发送验证链接</a>)
             </td>
         </tr>
         <tr>
@@ -35,9 +35,9 @@
         <tr>
             <td width="200"><b>站点</b></td>
             <td>
-                <p><a href="">所有(8)</a></p>
-                <p><a href="" class="color-danger">到期(2)</a></p>
-                <p><a href="" class="color-default">过期(2)</a></p>
+                <a href="">所有(8)</a>
+                <a href="">到期(<span class="color-danger">2</span>)</a>
+                <a href="">过期(<span class="color-default">2</span>)</a>
             </td>
         </tr>
     </table>

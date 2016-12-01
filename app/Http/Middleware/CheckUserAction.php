@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class CheckUser
+class CheckUserAction
 {
     /**
      * Handle an incoming request.
@@ -15,11 +15,12 @@ class CheckUser
      */
     public function handle($request, Closure $next)
     {   
-        // 控制代理用户能新增站点
-        if (!\Gate::allows('add-website')) {
+        // 资源访问控制：不允许当前用户对其他站点的操作
+        $user_id = \DB::table('websites')->where('id', $request->website_id)->value('user_id');
+        if(\Auth::guard()->user()->id != $user_id){
             return redirect('/home');
         }
-
+            
         return $next($request);
     }
 }

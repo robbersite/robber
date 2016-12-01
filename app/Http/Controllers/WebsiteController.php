@@ -30,7 +30,7 @@ class WebsiteController extends Controller
         ], $messages);
 
         $website_id = \DB::table('websites')->insertGetId(
-            ['name' => request('name'), 'url' => request('url'), 'user_id' => \Auth::user()->id]
+            ['name' => request('name'), 'url' => request('url'), 'user_id' => \Auth::user()->id, 'domain' => str_random(32)]
         );
 
         // 增加一个站点的同时，开通一天时间

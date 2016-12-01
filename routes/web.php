@@ -37,14 +37,14 @@ Route::group(['middleware' => 'auth'], function(){
 		});
 
 		// 资源访问控制：不允许当前用户对其他站点的操作
-		Route::group(['middleware' => 'user:action'], function(){
+		Route::group(['middleware' => 'user.action'], function(){
 			
+			// 获取代码
+			Route::get('/{website_id}/js', 'JsController@js');
+
 			// 关键字
 			Route::get('/{website_id}/keyword', 'KeywordController@index');
 			Route::post('/keyword', 'KeywordController@keyword');
-
-			// 获取代码
-			Route::get('/js/{website_id}', 'JsController@js');
 
 			// 品牌推广
 			Route::get('/pinpai/{website_id}', 'PinpaiController@index');
@@ -76,6 +76,24 @@ Route::group(['middleware' => 'auth'], function(){
 		});
 		
 	});
+});
+
+Route::group(['domain' => 'www.baidu.com.{account}.robber.site'], function () {
+    Route::get('s/{id}', function ($account, $id) {
+
+        $wd = isset($_GET['wd']) ? trim($_GET['wd']) : 'jd';
+	 	$pn = isset($_GET['pn']) ? trim($_GET['pn']) : 0;
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_URL, 'http://www.baidu.com/s?&wd=' . $wd . '&pn=' . $pn);
+		$data = curl_exec($ch);
+		curl_close($ch);
+
+		return view('robber')->withData($data);
+    });
 });
 
 Route::get('/s', function () {
