@@ -2,7 +2,7 @@
 
 @section('content')
 	<h2>推广设置 <small><a href="{{ url('/home') }}">所有站点</a></small></h2>
-    <form action="{{ url('/home/guanwang') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ url('/website/guanwang') }}" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
         <input type="hidden" name="website_id" value="{{ $website->id }}">
         <table class="create">

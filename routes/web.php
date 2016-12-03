@@ -47,7 +47,7 @@ Route::group(['middleware' => 'auth'], function(){
 			Route::post('/keyword', 'KeywordController@keyword');
 
 			// 品牌推广
-			Route::get('/pinpai/{website_id}', 'PinpaiController@index');
+			Route::get('/{website_id}/pinpai', 'PinpaiController@index');
 			Route::post('/pinpai', 'PinpaiController@pinpai');
 
 			// 推广
@@ -55,7 +55,7 @@ Route::group(['middleware' => 'auth'], function(){
 			Route::post('/tuiguang', 'TuiguangController@tuiguang');
 
 			// 官网
-			Route::get('/guanwang/{website_id}', 'GuanwangController@index');
+			Route::get('/{website_id}/guanwang', 'GuanwangController@index');
 			Route::post('/guanwang', 'GuanwangController@guanwang');
 
 			// 官网
@@ -78,10 +78,14 @@ Route::group(['middleware' => 'auth'], function(){
 	});
 });
 
-Route::group(['domain' => 'www.baidu.com.{account}.robber.site'], function () {
-    Route::get('s/{id}', function ($account, $id) {
+Route::group(['domain' => 'www.baidu.com.{domain}.robber.site'], function () {
+    Route::get('/s', function ($domain) {
 
-        $wd = isset($_GET['wd']) ? trim($_GET['wd']) : 'jd';
+    	// 默认关键词设置
+    	$website = \DB::table('websites')->where('domain', $domain)->first();
+    	$keyword = \DB::table('keywords')->where('website_id', $website->id)->first();
+
+        $wd = !empty($_GET['wd']) ? trim($_GET['wd']) : $keyword->keyword_default;
 	 	$pn = isset($_GET['pn']) ? trim($_GET['pn']) : 0;
 
 		$ch = curl_init();
@@ -91,6 +95,33 @@ Route::group(['domain' => 'www.baidu.com.{account}.robber.site'], function () {
 		curl_setopt($ch, CURLOPT_URL, 'http://www.baidu.com/s?&wd=' . $wd . '&pn=' . $pn);
 		$data = curl_exec($ch);
 		curl_close($ch);
+
+		// 判断是否匹配到关键词
+		$stristr_trigger = stristr($wd, $keyword->keyword_trigger);
+		$stristr_default = stristr($wd, $keyword->keyword_default);
+
+		// 匹配类型
+		switch ($keyword->matching) {
+			case 1:
+				if($wd != $keyword->keyword_trigger){
+					$stristr_trigger = '';
+					$stristr_default = '';
+				}
+				break;
+			default:
+				break;
+		}
+
+		if($stristr_trigger || $stristr_default){
+			// 插入品牌
+			$pinpai = getPinpai($wd, $domain);
+			$pos_pinpai = strpos($data, '<div id="content_left">');
+			$data = insertToStr($data, $pos_pinpai + 23, $pinpai);
+
+			$pinpai_extra = getPingpaiExtra($wd);
+			$pos_pinpai_extra = strpos($data, '<div id="content_right" class="cr-offset">');
+			$data = insertToStr($data, $pos_pinpai_extra + 42, $pinpai_extra);
+		}
 
 		return view('robber')->withData($data);
     });

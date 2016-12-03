@@ -53,7 +53,7 @@
         <div class="container">
             <div class="content">
                 <div class="title">404</div>
-                <p>Build On <a href="https://laravel.com" target="_blank">Laravel</a></p>
+                <!-- <p>Build On <a href="https://laravel.com" target="_blank">Laravel</a></p> -->
             </div>
         </div>
     </body>

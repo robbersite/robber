@@ -1,15 +1,15 @@
 @extends('master')
 
 @section('content')
-	<h2>品牌推广设置 <small><a href="{{ url('/home') }}">所有站点</a></small></h2>
-    <form action="{{ url('/home/pinpai') }}" method="post" enctype="multipart/form-data">
+	<h2>品牌推广设置 <small><a href="{{ url('/website') }}">所有站点</a></small></h2>
+    <form action="{{ url('/website/pinpai') }}" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
         <input type="hidden" name="website_id" value="{{ $website->id }}">
         <table class="create">
         	<tr>
         		<td width="200">标题</td>
         		<td>
-                    <input type="text" name="title" class="form-control" value="{{ $pinpai->title or '' }}">  <small>*</small>
+                    <input type="text" name="title" class="form-control" value="{{ $pinpai->title or '' }}">  <small>* 为了达到更真实的效果，标题中应该含有关键词</small>
                 </td>
             </tr>
             <tr>

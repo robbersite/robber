@@ -22,8 +22,8 @@
                 <td width="200">匹配类型</td>
                 <td>
                     <select name="matching">
-                        <option value="0">模糊匹配</option>
-                        <option value="1">完全匹配</option>
+                        <option value="0" @if(isset($keyword->matching) && !$keyword->matching)selected="selected"@endif>模糊匹配</option>
+                        <option value="1" @if(isset($keyword->matching) && $keyword->matching)selected="selected"@endif>完全匹配</option>
                     </select>
                     <small>* 模糊匹配：用户输入<mark>包含</mark>设置关键词即匹配成功。完全匹配：用户输入<mark>等于</mark>设置关键词才匹配成功。</small>
                 </td>

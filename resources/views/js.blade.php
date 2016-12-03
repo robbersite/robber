@@ -5,7 +5,7 @@
     <table>
     	<tr>
             <td width="200"><b>代码</b></td>
-            <td>{!! $js !!}</td>
+            <td><attr>{!! $js !!}</attr></td>
     	</tr>
     </table>
 @endsection

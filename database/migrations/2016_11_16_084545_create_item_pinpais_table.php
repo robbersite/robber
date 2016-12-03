@@ -17,7 +17,7 @@ class CreateItemPinpaisTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('description');
-            $table->string('thumb');
+            $table->string('thumb')->nullable();
             $table->string('nav_top');
             $table->string('nav_thumb');
             $table->string('nav_bottom');

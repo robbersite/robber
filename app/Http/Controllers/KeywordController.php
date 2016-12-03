@@ -41,6 +41,9 @@ class KeywordController extends Controller
             ]);
         }
 
+        // 触发更新js的事件，暂时放这里
+        // event();
+
         return redirect()->back();
     }
 }
