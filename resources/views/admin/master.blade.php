@@ -18,8 +18,8 @@
 		<div class="header-user">
 			<small>
 			@if (Auth::guard('admin')->check())           
-        		骚年<!-- ，{{ Auth::guard('admin')->user()->name }} -->，你今天又进步了。
-        		<a href="{{ url('/admin/logout') }}">修改密码</a>
+        		骚年，{{ Auth::guard('admin')->user()->name }}，你今天又进步了。
+        		<a href="{{ url('/admin/reset') }}">修改密码</a>
         		<a href="{{ url('/admin/logout') }}">退出</a>
         	@endif
         	</small>

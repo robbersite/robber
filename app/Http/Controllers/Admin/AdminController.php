@@ -1,23 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class HomeController extends Controller
+class AdminController extends Controller
 {
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {   
-        $user = \DB::table('users')->find(\Auth::user()->id);
-        return view('home', ['user' => $user]);
-    }
-
     public function reset(Request $request)
     {
         $info = [
@@ -30,11 +20,11 @@ class HomeController extends Controller
             'password' => 'required|min:6|confirmed',
         ], $info);
 
-        \DB::table('users')->where('id', \Auth::guard()->user()->id)->update([
+        \DB::table('admins')->where('id', \Auth::guard('admin')->user()->id)->update([
             'password' => bcrypt(request('password')),
             'remember_token' => Str::random(60),
         ]);
 
-        return redirect('/home');
+        return redirect('/admin');
     }
 }

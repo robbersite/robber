@@ -314,6 +314,11 @@ Route::group(['prefix' => 'admin'], function(){
 		Route::get('/', function(){
 			return redirect('/admin/users');
 		});
+		Route::get('/reset', function(){
+			return view('admin.reset');
+		});
+		Route::post('/reset', 'Admin\AdminController@reset');
+
 		Route::get('/users', 'Admin\UserController@index');
 		Route::get('/setUserGroup/{id}', 'Admin\UserController@setUserGroup');
 		Route::get('/websites', 'Admin\WebsiteController@index');
