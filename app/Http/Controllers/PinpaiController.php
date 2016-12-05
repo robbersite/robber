@@ -13,16 +13,15 @@ class PinpaiController extends Controller
         return view('pinpai', ['website' => $website, 'pinpai' => $pinpai]);
     }
 
-    public function pinpai(Request $request){
-
+    public function pinpai(Request $request)
+    {
         $messages = [
             'title.required' => '标题不能为空',
             'description.required' => '描述不能为空',
-            // 'thumb.required' => '缩略图不能为空',
             'nav_top.required' => '顶部栏目不能为空',
-            // 'nav_thumb.required' => '栏目图不能为空',
+            'nav_top.regex' => '顶部栏目格式不正确',
             'nav_bottom.required' => '底部栏目不能为空',
-            // 'extra_thumb.required' => '右侧缩略图不能为空',
+            'nav_bottom.regex' => '底部栏目格式不正确',
             'extra_description.required' => '右侧描述不能为空',
             'extra_list.required' => '右侧列表不能为空'
         ];
@@ -30,11 +29,8 @@ class PinpaiController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'description' => 'required',
-            // 'thumb' => 'required',
-            'nav_top' => 'required',
-            // 'nav_thumb' => 'required',
-            'nav_bottom' => 'required',
-            // 'extra_thumb' => 'required',
+            'nav_top' => 'required|regex:/^([^,]*,){5}[^,]*$/',
+            'nav_bottom' => 'required|regex:/^([^,]*,){4}[^,]*$/',
             'extra_description' => 'required',
             'extra_list' => 'required',
         ], $messages);

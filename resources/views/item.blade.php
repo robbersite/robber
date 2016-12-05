@@ -2,7 +2,9 @@
 
 @section('content')
 	<form id="search" action=""></form>
-	<h2>自定义条目<small>({{ count($items) }})</small> <small><a href="{{ url('/home/item/'. $website->id .'/add') }}">新增</a> <a href="{{ url('/home') }}">所有站点</a></small></small></h2>
+	<h2>自定义条目<small>({{ count($items) }})</small>
+        <small><a href="{{ url('/website/'. $website->id .'/item/add') }}">新增</a></small>
+    </h2>
     <table>
     	<tr>
     		<th>序号</th>
@@ -23,8 +25,8 @@
                 <td>{{ $item->url }}</td>
                 <td><img src="{{ $item->thumb }}"></td>
                 <td>
-                    <a href="{{ url('/home/item/edit/' . $item->id . '/website/' .$website->id) }}">编辑</a>
-                    <a href="{{ url('/home/item/del/' . $item->id . '/website/' .$website->id) }}">删除</a>
+                    <a href="{{ url('/website/'. $website->id .'/item/'. $item->id .'/edit') }}">编辑</a>
+                    <a href="{{ url('/website/'. $website->id .'/item/'. $item->id .'/del') }}">删除</a>
                 </td>
             </tr>
             @endforeach

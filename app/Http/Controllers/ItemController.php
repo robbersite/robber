@@ -46,11 +46,11 @@ class ItemController extends Controller
 
         $insert = \DB::table('items')->insert($input);
     
-        // return redirect()->back();
+        return redirect('/website/'. request('website_id') .'/item');
     }
 
-    public function edit($item_id, $website_id)
-    {
+    public function edit($website_id, $item_id)
+    {   
     	$item = \DB::table('items')->where('id', $item_id)->first();
     	$website = \DB::table('websites')->where('id', $website_id)->first();
     	return view('itemEdit', ['item' => $item, 'website' => $website]);
@@ -83,12 +83,12 @@ class ItemController extends Controller
 
         $insert = \DB::table('items')->where('id', request('item_id'))->update($input);
     
-        return redirect()->back();
+        return redirect('/website/'. request('website_id') .'/item');
     }
 
-    public function del($item_id, $website_id)
+    public function del($website_id, $item_id)
    	{	
    		\DB::table('items')->where('id', $item_id)->delete();
-   		return redirect()->action('ItemController@index', $website_id);
+   		return redirect('/website/'. $website_id .'/item');
    	}
 }

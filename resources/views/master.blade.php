@@ -27,7 +27,7 @@
 	@if (count($errors) > 0 )
 	    <div class="errors">
 	        @foreach ($errors->all() as $error)
-	            <span>· {{ $error }}</span>
+	            <span>·{{ $error }}</span>
 	        @endforeach
 	    </div>
     @endif

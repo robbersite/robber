@@ -1,8 +1,8 @@
 @extends('master')
 
 @section('content')
-	<h2>新增条目 <small><a href="{{ url('/home/item', ['website_id' => $website->id]) }}">所有条目</a></small></h2>
-    <form action="{{ url('/home/item/add') }}" method="post" enctype="multipart/form-data">
+	<h2>新增条目 <small><a href="{{ url('/website/'. $website->id .'/item') }}">所有条目</a></small></h2>
+    <form action="{{ url('/website/item/add') }}" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
         <input type="hidden" name="website_id" value="{{ $website->id }}">
         <table class="create">

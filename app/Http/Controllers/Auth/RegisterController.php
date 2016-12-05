@@ -74,10 +74,24 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+
+        $website_id = \DB::table('websites')->insertGetId(
+            ['name' => '默认站点', 'url' => 'http://www.robber.site', 'user_id' => $user->id, 'domain' => str_random(32)]
+        );
+
+        // 增加一个站点的同时，开通一天时间
+        \DB::table('website_orders')->insert([
+            'start' => time(),
+            'stop' => time() + 3600*24,
+            'last' => 1,
+            'website_id' => $website_id
+        ]);
+
+        return $user;
     }
 }

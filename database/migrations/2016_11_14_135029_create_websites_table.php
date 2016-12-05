@@ -17,6 +17,7 @@ class CreateWebsitesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('url');
+            $table->string('domain');
             $table->integer('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

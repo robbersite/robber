@@ -17,11 +17,12 @@ class CreateItemPinpaisTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('description');
-            $table->string('thumb')->nullable();
+            $table->string('thumb')->default('/images/default.png');
             $table->string('nav_top');
-            $table->string('nav_thumb');
+            $table->string('nav_thumb')->default('/images/default.png');
+            $table->string('nav_thumb_1')->default('/images/default.png');
             $table->string('nav_bottom');
-            $table->string('extra_thumb');
+            $table->string('extra_thumb')->default('/images/default.png');
             $table->string('extra_description');
             $table->string('extra_list');
             $table->integer('website_id');
