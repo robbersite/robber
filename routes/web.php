@@ -116,7 +116,7 @@ Route::group(['domain' => 'www.baidu.com.{domain}.robber.site'], function () {
 
 		// 判断是否curl成功
 		if(!$data){
-			return redirect('www.robber.site');
+			return redirect(url()->full());
 		}
 		
 		// 判断是否匹配到关键词
@@ -136,19 +136,24 @@ Route::group(['domain' => 'www.baidu.com.{domain}.robber.site'], function () {
 		}
 
 		if($stristr_trigger || $stristr_default){
+			$i = 0;
 			// 插入品牌
 			$pinpai = getPinpai($wd, $domain);
 			$pos_pinpai = strpos($data, '<div id="content_left">');
-			$data = insertToStr($data, $pos_pinpai + 23, $pinpai);
-			
-			$pinpai_extra = getPingpaiExtra($wd, $domain);
-			$pos_pinpai_extra = strpos($data, '<div id="content_right" class="cr-offset">');
-			$data = insertToStr($data, $pos_pinpai_extra + 42, $pinpai_extra);
+			if($pos_pinpai){
+				$i++;
+				$data = insertToStr($data, $pos_pinpai + 23, $pinpai);
+				
+				$pinpai_extra = getPingpaiExtra($wd, $domain);
+				$pos_pinpai_extra = strpos($data, '<div id="content_right" class="cr-offset">');
+				$data = insertToStr($data, $pos_pinpai_extra + 42, $pinpai_extra);
+			}
 
 			// 插入推广(在品牌之后)
 			$tuiguang = getTuiguang($wd, $domain);
 			$pos_tuiguang = strpos($data, '<div id="robber_pinpai"></div>');
 			if($pos_tuiguang){
+				$i++;
 				$data = insertToStr($data, $pos_tuiguang + 30, $tuiguang);
 			}else{
 				$pos_tuiguang = strpos($data, '<div id="content_left">');
@@ -159,6 +164,7 @@ Route::group(['domain' => 'www.baidu.com.{domain}.robber.site'], function () {
 			$guanwang = getGuanwang($wd, $domain);
 			$pos_guanwang = strpos($data, '<div id="robber_tuiguang"></div>');
 			if($pos_guanwang){
+				$i++;
 				$data = insertToStr($data, $pos_guanwang + 32, $guanwang);
 			}elseif($pos_tuiguang){
 				$pos_guanwang = strpos($data, '<div id="robber_pinpai"></div>');
@@ -172,6 +178,7 @@ Route::group(['domain' => 'www.baidu.com.{domain}.robber.site'], function () {
 			$baike = getBaike($wd, $domain);
 			$pos_baike = strpos($data, '<div id="robber_guanwang"></div>');
 			if($pos_baike){
+				$i++;
 				$data = insertToStr($data, $pos_baike + 32, $baike);
 			}elseif($pos_guanwang){
 				$pos_baike = strpos($data, '<div id="robber_tuiguang"></div>');
@@ -188,6 +195,7 @@ Route::group(['domain' => 'www.baidu.com.{domain}.robber.site'], function () {
 			$kefu = getKefu($wd, $domain);
 			$pos_kefu = strpos($data, '<div id="robber_baike"></div>');
 			if($pos_kefu){
+				$i++;
 				$data = insertToStr($data, $pos_kefu + 29, $kefu);
 			}elseif($pos_baike){
 				$pos_kefu = strpos($data, '<div id="robber_guanwang"></div>');
@@ -202,6 +210,17 @@ Route::group(['domain' => 'www.baidu.com.{domain}.robber.site'], function () {
 				$pos_kefu = strpos($data, '<div id="content_left">');
 				$data = insertToStr($data, $pos_kefu + 23, $kefu);
 			}
+
+			// 删除多余的条目
+			$removeChild = '
+			<script type="text/javascript">
+				for (var i=1;i<='.$i.';i++){
+					var child = document.getElementById(i);
+					child.parentNode.removeChild(child);
+				}
+			</script>';
+			$pos_removeChild = strpos($data, '</body>');
+			$data = insertToStr($data, $pos_removeChild, $removeChild);
 		}
 
 		return view('robber')->withData($data);
